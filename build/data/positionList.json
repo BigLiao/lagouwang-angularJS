@@ -57,7 +57,7 @@
     "date": "2016-06-01 01:05"
   }, {
     "id": "p2",
-    "imageUrl": "/image/company-2.png",
+    "imageUrl": "image/company-2.png",
     "job": "阿语SEM工程师",
     "companyId": "c2",
     "companyName": "六一集团有限公司",
