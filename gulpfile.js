@@ -5,7 +5,7 @@ var open = require('open');
 var app = {
   srcPath: 'src/',
   devPath: 'build/',
-  prdPath: 'dist/'
+  prdPath: 'docs/'
 };
 
 gulp.task('lib', function() {

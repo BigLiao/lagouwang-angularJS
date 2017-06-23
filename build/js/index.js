@@ -3,165 +3,6 @@
 angular.module('app', ['ui.router', 'ngCookies', 'validation', 'ngAnimate']);
 
 'use strict';
-angular.module('app').directive('appCompany', [function(){
-  return {
-    restrict: 'A',
-    replace: true,
-    scope: {
-      com: '='
-    },
-    templateUrl: 'view/template/company.html'
-  };
-}]);
-
-'use strict';
-angular.module('app').directive('appFoot', [function(){
-  return {
-    restrict: 'A',
-    replace: true,
-    templateUrl: 'view/template/foot.html'
-  }
-}]);
-
-'use strict';
-angular.module('app').directive('appHead', ['cache', function(cache){
-  return {
-    restrict: 'A',
-    replace: true,
-    templateUrl: 'view/template/head.html',
-    link: function($scope) {
-      $scope.name = cache.get('name') || '';
-    }
-  };
-}]);
-
-'use strict';
-angular.module('app').directive('appHeadBar', [function(){
-  return {
-    restrict: 'A',
-    replace: true,
-    templateUrl: 'view/template/headBar.html',
-    scope: {
-      text: '@'
-    },
-    link: function($scope) {
-      $scope.back = function() {
-        window.history.back();
-      };
-    }
-  };
-}]);
-
-'use strict';
-angular.module('app').directive('appPositionClass', [function(){
-  return {
-    restrict: 'A',
-    replace: true,
-    scope: {
-      com: '='
-    },
-    templateUrl: 'view/template/positionClass.html',
-    link: function($scope) {
-      $scope.showPositionList = function(idx) {
-        $scope.positionList = $scope.com.positionClass[idx].positionList;
-        $scope.isActive = idx;
-      }
-      $scope.$watch('com', function(newVal){
-        if(newVal) $scope.showPositionList(0);
-      });
-    }
-  };
-}]);
-
-'use strict';
-angular.module("app").directive('appPositionInfo', ['$http', function($http){
-  return {
-    restrict: 'A',
-    replace: true,
-    templateUrl: 'view/template/positionInfo.html',
-    scope: {
-      isActive: '=',
-      isLogin: '=',
-      pos: '='
-    },
-    link: function($scope) {
-      $scope.$watch('pos', function(newVal) {
-        if(newVal) {
-          $scope.pos.select = $scope.pos.select || false;
-          $scope.imagePath = $scope.pos.select?'image/star-active.png':'image/star.png';
-        }
-      })
-      $scope.favorite = function() {
-        $http.post('data/favorite.json', {
-          id: $scope.pos.id,
-          select: !$scope.pos.select
-        }).success(function(resp) {
-          $scope.pos.select = !$scope.pos.select;
-          $scope.imagePath = $scope.pos.select?'image/star-active.png':'image/star.png';
-        });
-      }
-    }
-  }
-}]);
-
-'use strict';
-angular.module('app').directive('appPositionList', ['$http', function($http){
-  return {
-    restrict: 'A',
-    replace: true,
-    templateUrl: 'view/template/positionList.html',
-    scope: {
-      data: '=',
-      filterObj: '=',
-      isFavorite: '='
-    },
-    link: function($scope) {
-      $scope.select = function(item) {
-        $http.post('data/favorite.json', {
-          id: item.id,
-          select: !item.select
-        }).success(function(resp){
-          item.select = !item.select;
-        })
-      };
-    }
-  };
-}]);
-
-'use strict';
-angular.module('app').directive('appSheet', [function(){
-  return {
-    restrict: 'A',
-    replace: true,
-    scope: {
-      list: '=',
-      visible: '=',
-      select: '&'
-    },
-    templateUrl: 'view/template/sheet.html'
-  };
-}]);
-
-'use strict';
-angular.module('app').directive('appTab', [function(){
-  return {
-    restrict: 'A',
-    replace: true,
-    scope: {
-      list: '=',
-      tabClick: '&'
-    },
-    templateUrl: 'view/template/tab.html',
-    link: function($scope) {
-      $scope.click = function(tab) {
-        $scope.selectId = tab.id;
-        $scope.tabClick(tab);
-      };
-    }
-  };
-}]);
-
-'use strict';
 angular.module('app').controller('companyCtrl', ['$http', '$state', '$scope', function($http, $state, $scope){
   $http.get('data/company.json?id='+$state.params.id).success(function(resp){
     $scope.company = resp;
@@ -479,6 +320,178 @@ angular.module('app').config(['$validationProvider', function($validationProvide
 }]);
 
 'use strict';
+angular.module('app').directive('appCompany', [function(){
+  return {
+    restrict: 'A',
+    replace: true,
+    scope: {
+      com: '='
+    },
+    templateUrl: 'view/template/company.html'
+  };
+}]);
+
+'use strict';
+angular.module('app').directive('appFoot', [function(){
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'view/template/foot.html'
+  }
+}]);
+
+'use strict';
+angular.module('app').directive('appHead', ['cache', function(cache){
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'view/template/head.html',
+    link: function($scope) {
+      $scope.name = cache.get('name') || '';
+    }
+  };
+}]);
+
+'use strict';
+angular.module('app').directive('appHeadBar', [function(){
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'view/template/headBar.html',
+    scope: {
+      text: '@'
+    },
+    link: function($scope) {
+      $scope.back = function() {
+        window.history.back();
+      };
+    }
+  };
+}]);
+
+'use strict';
+angular.module('app').directive('appPositionClass', [function(){
+  return {
+    restrict: 'A',
+    replace: true,
+    scope: {
+      com: '='
+    },
+    templateUrl: 'view/template/positionClass.html',
+    link: function($scope) {
+      $scope.showPositionList = function(idx) {
+        $scope.positionList = $scope.com.positionClass[idx].positionList;
+        $scope.isActive = idx;
+      }
+      $scope.$watch('com', function(newVal){
+        if(newVal) $scope.showPositionList(0);
+      });
+    }
+  };
+}]);
+
+'use strict';
+angular.module("app").directive('appPositionInfo', ['$http', function($http){
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'view/template/positionInfo.html',
+    scope: {
+      isActive: '=',
+      isLogin: '=',
+      pos: '='
+    },
+    link: function($scope) {
+      $scope.$watch('pos', function(newVal) {
+        if(newVal) {
+          $scope.pos.select = $scope.pos.select || false;
+          $scope.imagePath = $scope.pos.select?'image/star-active.png':'image/star.png';
+        }
+      })
+      $scope.favorite = function() {
+        $http.post('data/favorite.json', {
+          id: $scope.pos.id,
+          select: !$scope.pos.select
+        }).success(function(resp) {
+          $scope.pos.select = !$scope.pos.select;
+          $scope.imagePath = $scope.pos.select?'image/star-active.png':'image/star.png';
+        });
+      }
+    }
+  }
+}]);
+
+'use strict';
+angular.module('app').directive('appPositionList', ['$http', function($http){
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'view/template/positionList.html',
+    scope: {
+      data: '=',
+      filterObj: '=',
+      isFavorite: '='
+    },
+    link: function($scope) {
+      $scope.select = function(item) {
+        $http.post('data/favorite.json', {
+          id: item.id,
+          select: !item.select
+        }).success(function(resp){
+          item.select = !item.select;
+        })
+      };
+    }
+  };
+}]);
+
+'use strict';
+angular.module('app').directive('appSheet', [function(){
+  return {
+    restrict: 'A',
+    replace: true,
+    scope: {
+      list: '=',
+      visible: '=',
+      select: '&'
+    },
+    templateUrl: 'view/template/sheet.html'
+  };
+}]);
+
+'use strict';
+angular.module('app').directive('appTab', [function(){
+  return {
+    restrict: 'A',
+    replace: true,
+    scope: {
+      list: '=',
+      tabClick: '&'
+    },
+    templateUrl: 'view/template/tab.html',
+    link: function($scope) {
+      $scope.click = function(tab) {
+        $scope.selectId = tab.id;
+        $scope.tabClick(tab);
+      };
+    }
+  };
+}]);
+
+'use strict';
+angular.module('app').service('cache', ['$cookies', function($cookies){
+    this.put = function(key, value){
+      $cookies.put(key, value);
+    };
+    this.get = function(key) {
+      return $cookies.get(key);
+    };
+    this.remove = function(key) {
+      $cookies.remove(key);
+    };
+}]);
+
+'use strict';
 angular.module('app').filter('filterByObj', [function(){
   return function(list, obj) {
     var result = [];
@@ -495,17 +508,4 @@ angular.module('app').filter('filterByObj', [function(){
     });
     return result;
   };
-}]);
-
-'use strict';
-angular.module('app').service('cache', ['$cookies', function($cookies){
-    this.put = function(key, value){
-      $cookies.put(key, value);
-    };
-    this.get = function(key) {
-      return $cookies.get(key);
-    };
-    this.remove = function(key) {
-      $cookies.remove(key);
-    };
 }]);
