@@ -111,6 +111,25 @@ angular.module('app').config(['$validationProvider', function($validationProvide
 }]);
 
 'use strict';
+angular.module('app').filter('filterByObj', [function(){
+  return function(list, obj) {
+    var result = [];
+    angular.forEach(list, function(item){
+      var isEqual = true;
+      for(var e in obj){
+        if(item[e]!==obj[e]) {
+          isEqual = false;
+        }
+      }
+      if(isEqual) {
+        result.push(item);
+      }
+    });
+    return result;
+  };
+}]);
+
+'use strict';
 angular.module('app').controller('companyCtrl', ['$http', '$state', '$scope', function($http, $state, $scope){
   $http.get('data/company.json?id='+$state.params.id).success(function(resp){
     $scope.company = resp;
@@ -475,25 +494,6 @@ angular.module('app').directive('appTab', [function(){
         $scope.tabClick(tab);
       };
     }
-  };
-}]);
-
-'use strict';
-angular.module('app').filter('filterByObj', [function(){
-  return function(list, obj) {
-    var result = [];
-    angular.forEach(list, function(item){
-      var isEqual = true;
-      for(var e in obj){
-        if(item[e]!==obj[e]) {
-          isEqual = false;
-        }
-      }
-      if(isEqual) {
-        result.push(item);
-      }
-    });
-    return result;
   };
 }]);
 
